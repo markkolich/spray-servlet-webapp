@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+  version="3.0">
+  
+	<display-name>Havalo</display-name>
+	<description>A zero configuration, non-distributed key-value store that runs in your existing Servlet container.</description>
+
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>havalo.root</param-value>
+	</context-param>
+	
+	<!--
+		Disable the use of session cookies.  This turns off the setting
+		of the typical "JSESSIONID" session cookies.  Seems to only apply
+		to Tomcat, does nothing in Jetty.
+	-->
+	<session-config>
+		<tracking-mode>URL</tracking-mode>
+	</session-config>
+	
+	<listener>
+        	<listener-class>spray.servlet.Initializer</listener-class>
+	</listener>
+
+    <servlet>
+        <servlet-name>SprayConnectorServlet</servlet-name>
+        <servlet-class>spray.servlet.Servlet30ConnectorServlet</servlet-class>
+        <async-supported>true</async-supported>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SprayConnectorServlet</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/jsp/errors/404-not-found.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/WEB-INF/jsp/errors/500-internal-server-error.jsp</location>
+	</error-page>
+	
+</web-app>
