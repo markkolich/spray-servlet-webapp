@@ -45,18 +45,31 @@ object Dependencies {
 
   // Using Jetty 8 "stable", version 8.1.8.v20121106
   private val jettyWebApp = "org.eclipse.jetty" % "jetty-webapp" % "8.1.10.v20130312" % "container"
-  private val jettyPlus = "org.eclipse.jetty" % "jetty-plus" % "8.1.10.v20130312" % "container"
+  //private val jettyPlus = "org.eclipse.jetty" % "jetty-plus" % "8.1.10.v20130312" % "container"
   private val servlet = "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided" // Provided by container
-
+  
   private val logback = "ch.qos.logback" % "logback-core" % "1.0.7" % "compile"
   private val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.0.7" % "compile" // An Slf4j impl
   private val slf4j = "org.slf4j" % "slf4j-api" % "1.6.4" % "compile"
   private val jclOverSlf4j = "org.slf4j" % "jcl-over-slf4j" % "1.6.6" % "compile"
 
+  private val akkaActor = "com.typesafe.akka" %% "akka-actor" % "2.1.2" % "compile"
+  private val akkaSlf4j = "com.typesafe.akka" %% "akka-slf4j" % "2.1.2" % "compile"
+  
+  private val slf4s = "com.weiglewilczek.slf4s" % "slf4s_2.9.1" % "1.0.7" % "compile" // Meh, forcing 2.9.1 version
+  
+  private val sprayRouting = "io.spray" % "spray-routing" % "1.1-M7" % "compile"
+  private val sprayServlet = "io.spray" % "spray-servlet" % "1.1-M7" % "compile"
+  private val sprayJson = "io.spray" % "spray-json_2.10" % "1.2.3" % "compile"
+  
+  private val scalate = "org.fusesource.scalate" % "scalate-core_2.10" % "1.6.1" % "compile"
+
   val deps = Seq(kolichCommon,
-    jettyWebApp, jettyPlus,
-    servlet,
-    logback, logbackClassic, slf4j, jclOverSlf4j)
+    jettyWebApp, servlet,
+    logback, logbackClassic, slf4j, jclOverSlf4j,
+    akkaActor, akkaSlf4j, slf4s,
+    sprayServlet, sprayJson, sprayRouting,
+    scalate)
 
 }
 
@@ -84,7 +97,7 @@ object SprayServletWebapp extends Build {
     settings = Defaults.defaultSettings ++ Seq(resolvers := depResolvers) ++ Seq(
       version := aVer,
       organization := aOrg,
-      scalaVersion := "2.10.0",
+      scalaVersion := "2.10.1",
       shellPrompt := { (state: State) => { "%s:%s> ".format(aName, aVer) } },
       // True to export the packaged JAR instead of just the compiled .class files.
       exportJars := true,
@@ -150,8 +163,6 @@ object SprayServletWebapp extends Build {
       Seq(EclipseKeys.createSrc := EclipseCreateSrc.Default,
         // Make sure SBT also fetches/loads the "src" (source) JAR's for
         // all declared dependencies.
-        EclipseKeys.withSource := true,
-        // This is a Java project, only.
-        EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala))
+        EclipseKeys.withSource := true))
 
 }

@@ -5,8 +5,8 @@
                       http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
   version="3.0">
   
-	<display-name>Havalo</display-name>
-	<description>A zero configuration, non-distributed key-value store that runs in your existing Servlet container.</description>
+	<display-name>spray-servlet-webapp</display-name>
+	<description>A simple web-application example using Spray and spray-servlet.</description>
 
 	<context-param>
 		<param-name>webAppRootKey</param-name>
@@ -23,7 +23,7 @@
 	</session-config>
 	
 	<listener>
-        	<listener-class>spray.servlet.Initializer</listener-class>
+		<listener-class>spray.servlet.Initializer</listener-class>
 	</listener>
 
     <servlet>
@@ -31,19 +31,18 @@
         <servlet-class>spray.servlet.Servlet30ConnectorServlet</servlet-class>
         <async-supported>true</async-supported>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>SprayConnectorServlet</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/app/*</url-pattern>
     </servlet-mapping>
 
 	<error-page>
 		<error-code>404</error-code>
-		<location>/WEB-INF/jsp/errors/404-not-found.jsp</location>
+		<location>/WEB-INF/errors/404.html</location>
 	</error-page>
 	<error-page>
 		<error-code>500</error-code>
-		<location>/WEB-INF/jsp/errors/500-internal-server-error.jsp</location>
+		<location>/WEB-INF/errors/500.html</location>
 	</error-page>
 	
 </web-app>
