@@ -45,8 +45,10 @@ object Dependencies {
 
   // Using Jetty 8 "stable", version 8.1.8.v20121106
   private val jettyWebApp = "org.eclipse.jetty" % "jetty-webapp" % "8.1.10.v20130312" % "container"
-  //private val jettyPlus = "org.eclipse.jetty" % "jetty-plus" % "8.1.10.v20130312" % "container"
+  private val jettyPlus = "org.eclipse.jetty" % "jetty-plus" % "8.1.10.v20130312" % "container"
   private val servlet = "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided" // Provided by container
+  
+  private val findbugs = "com.google.code.findbugs" % "jsr305" % "2.0.1" % "compile"
   
   private val logback = "ch.qos.logback" % "logback-core" % "1.0.7" % "compile"
   private val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.0.7" % "compile" // An Slf4j impl
@@ -63,9 +65,10 @@ object Dependencies {
   private val sprayJson = "io.spray" % "spray-json_2.10" % "1.2.3" % "compile"
   
   private val scalate = "org.fusesource.scalate" % "scalate-core_2.10" % "1.6.1" % "compile"
-
+  
   val deps = Seq(kolichCommon,
-    jettyWebApp, servlet,
+    jettyWebApp, jettyPlus, servlet,
+    findbugs,
     logback, logbackClassic, slf4j, jclOverSlf4j,
     akkaActor, akkaSlf4j, slf4s,
     sprayServlet, sprayJson, sprayRouting,

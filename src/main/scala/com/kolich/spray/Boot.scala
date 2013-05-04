@@ -1,11 +1,11 @@
 package com.kolich.spray
 
-import com.kolich.spray.service._
+import com.kolich.spray.service.WebAppService
+import com.weiglewilczek.slf4s.Logging
 
-import akka.actor.{Props, ActorSystem}
-import com.weiglewilczek.slf4s.{Logging, Logger}
-import spray.routing._
-import spray.servlet._
+import akka.actor.ActorSystem
+import akka.actor.Props
+import spray.servlet.WebBoot
 
 class Boot extends WebBoot with Logging {
   

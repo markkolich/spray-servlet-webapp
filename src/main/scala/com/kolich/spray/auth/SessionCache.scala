@@ -14,10 +14,10 @@ import com.kolich.spray.models._
 sealed trait SessionCache {
     
   private lazy val sessionCache = CacheBuilder.newBuilder()
-    .expireAfterAccess(ApplicationConfig.sessionTimeout.toMillis, TimeUnit.MILLISECONDS)
+    .expireAfterAccess(ApplicationConfig.sessionTimeout, TimeUnit.MILLISECONDS)    
     .asInstanceOf[CacheBuilder[String, SessionData]]
     .build[String, SessionData]()
-    .asMap() // Concurrent map, ftw
+    .asMap() // Concurrent map, fwiw
 
   def getSession(sessionId: String):Option[SessionData] =
     sessionCache.get(sessionId) match {
@@ -41,3 +41,5 @@ sealed trait SessionCache {
   }
 
 }
+
+object SessionCache extends SessionCache
