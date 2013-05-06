@@ -46,6 +46,10 @@ object Dependencies {
   // Using Jetty 8 "stable", version 8.1.8.v20121106
   private val jettyWebApp = "org.eclipse.jetty" % "jetty-webapp" % "8.1.10.v20130312" % "container"
   private val jettyPlus = "org.eclipse.jetty" % "jetty-plus" % "8.1.10.v20130312" % "container"
+  private val jettyJsp = "org.eclipse.jetty" % "jetty-jsp" % "8.1.10.v20130312" % "container"
+  
+  private val jspApi = "javax.servlet.jsp" % "jsp-api" % "2.2" % "provided" // Provided by container  
+  private val jstl = "javax.servlet" % "jstl" % "1.2" % "compile" // Package with WAR
   private val servlet = "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided" // Provided by container
   
   private val findbugs = "com.google.code.findbugs" % "jsr305" % "2.0.1" % "compile"
@@ -54,11 +58,11 @@ object Dependencies {
   private val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.0.7" % "compile" // An Slf4j impl
   private val slf4j = "org.slf4j" % "slf4j-api" % "1.6.4" % "compile"
   private val jclOverSlf4j = "org.slf4j" % "jcl-over-slf4j" % "1.6.6" % "compile"
+  
+  private val slf4s = "com.weiglewilczek.slf4s" % "slf4s_2.9.1" % "1.0.7" % "compile" // Meh, forcing 2.9.1 version
 
   private val akkaActor = "com.typesafe.akka" %% "akka-actor" % "2.1.2" % "compile"
   private val akkaSlf4j = "com.typesafe.akka" %% "akka-slf4j" % "2.1.2" % "compile"
-  
-  private val slf4s = "com.weiglewilczek.slf4s" % "slf4s_2.9.1" % "1.0.7" % "compile" // Meh, forcing 2.9.1 version
   
   private val sprayRouting = "io.spray" % "spray-routing" % "1.1-M7" % "compile"
   private val sprayServlet = "io.spray" % "spray-servlet" % "1.1-M7" % "compile"
@@ -67,10 +71,11 @@ object Dependencies {
   private val scalate = "org.fusesource.scalate" % "scalate-core_2.10" % "1.6.1" % "compile"
   
   val deps = Seq(kolichCommon,
-    jettyWebApp, jettyPlus, servlet,
+    jettyWebApp, jettyPlus, jettyJsp,
+    jspApi, jstl, servlet,
     findbugs,
-    logback, logbackClassic, slf4j, jclOverSlf4j,
-    akkaActor, akkaSlf4j, slf4s,
+    logback, logbackClassic, slf4j, jclOverSlf4j, slf4s,
+    akkaActor, akkaSlf4j,
     sprayServlet, sprayJson, sprayRouting,
     scalate)
 

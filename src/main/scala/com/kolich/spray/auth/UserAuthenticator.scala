@@ -20,10 +20,11 @@ case class SessionCookie(token: String = "") {
 
 object SessionCookie {
 
-  private val sessionCookieName = "WEBAPP_SESSION"
+  private val sessionCookieName = "SESSION"
 
-  // Incoming cookie looks like ZEPHYR_SESSION="foobar" (with quotes) -- we only want the "foobar" part, no quotes
-  private val sessionCookieRegex = """WEBAPP_SESSION="([^"]+)"""".r
+  // Incoming cookie looks like SESSION="foobar" (with quotes)
+  // We only want the "foobar" part, no quotes.
+  private val sessionCookieRegex = """SESSION="([^"]+)"""".r
 
   def apply(cookie: HttpCookie): SessionCookie =
     sessionCookieRegex.findFirstMatchIn(cookie.value) match {
