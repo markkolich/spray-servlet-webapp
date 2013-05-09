@@ -1,3 +1,5 @@
+<%@ val error: Boolean = false  %>
+
 <!doctype html>
 <html>
 <head>
@@ -6,6 +8,10 @@
 <body>
 
 <h2>Login</h2>
+
+#if (error)
+	<p class="error" style="color:red;font-weight:bold;">Invalid username and or password.</p>
+#end
 
 <form method="post" action="login">
 	<p>

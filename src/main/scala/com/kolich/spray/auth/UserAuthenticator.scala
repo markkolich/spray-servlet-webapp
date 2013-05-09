@@ -1,6 +1,6 @@
 package com.kolich.spray.auth
 
-import scala.concurrent.{Promise, ExecutionContext, Future}
+import scala.concurrent.{ Promise, ExecutionContext, Future }
 
 import spray.routing._
 import spray.routing.authentication._
@@ -33,25 +33,26 @@ object SessionCookie {
       // Input string value did not match regex, no cookie or malformed cookie header?
       // Returns a new cookie with an empty "" token (will never match any session)
       case _ => apply()
-  	}
+    }
 
-  def getSessionCookieHeader(content: String = "", expires: Option[DateTime] = None, maxAge: Option[Long] = None):`Set-Cookie` =
-    `Set-Cookie`(HttpCookie(name = sessionCookieName,
-        content = content,
-        expires = expires,
-        maxAge = maxAge,
-        secure = false,
-        httpOnly = true))
+  def getSessionCookieHeader(content: String = "",
+    expires: Option[DateTime] = None,
+    maxAge: Option[Long] = None): `Set-Cookie` = `Set-Cookie`(
+    HttpCookie(name = sessionCookieName,
+      content = content,
+      expires = expires,
+      maxAge = maxAge,
+      secure = false,
+      httpOnly = true))
 
   def getUnsetSessionCookieHeader = getSessionCookieHeader(maxAge = Some(0L))
 
 }
 
-class UserAuthenticator[T](val authenticator: cookie.CookieAuthenticator[T])
-  (implicit val ec: ExecutionContext) extends WebAppAuthenticator[T] {
-  
+class UserAuthenticator[T](val authenticator: cookie.CookieAuthenticator[T])(implicit val ec: ExecutionContext) extends WebAppAuthenticator[T] {
+
   override def authenticate(cookies: Option[Seq[HttpCookie]], ctx: RequestContext) = {
-	authenticator {
+    authenticator {
       cookies match {
         // NOTE: Only returns the _first_ matched session cookie from the
         // request.  If the request contains more than one session cookie

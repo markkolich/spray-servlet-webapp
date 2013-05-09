@@ -1,6 +1,6 @@
 package com.kolich.spray.auth
 
-import scala.concurrent.{Promise, ExecutionContext, Future}
+import scala.concurrent.{ Promise, ExecutionContext, Future }
 
 import spray.routing._
 import spray.routing.authentication._
@@ -13,7 +13,7 @@ case class MissingSessionCookieRejection() extends Rejection
 case class WebAppAuthenticationRejection() extends Rejection
 
 trait WebAppAuthenticator[T] extends ContextAuthenticator[T] {
-  
+
   def apply(ctx: RequestContext) = {
     val cookieHeaders = ctx.request.headers.findByType[`Cookie`]
     val cookies = cookieHeaders.map { case Cookie(cookie) => cookie }
@@ -27,9 +27,9 @@ trait WebAppAuthenticator[T] extends ContextAuthenticator[T] {
       }
     }
   }
-  
+
   implicit def ec: ExecutionContext
-  
+
   def authenticate(cookies: Option[Seq[HttpCookie]], ctx: RequestContext): Future[Option[T]]
 
 }

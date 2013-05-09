@@ -8,9 +8,9 @@ import akka.actor.Props
 import spray.servlet.WebBoot
 
 class Boot extends WebBoot with Logging {
-  
+
   val system = ActorSystem("spray-servlet-webapp")
-  
+
   val serviceActor = system.actorOf(Props[WebAppService])
-  
+
 }

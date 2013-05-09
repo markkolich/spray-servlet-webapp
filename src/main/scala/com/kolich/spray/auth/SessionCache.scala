@@ -12,27 +12,21 @@ import com.kolich.spray._
 import com.kolich.spray.models._
 
 sealed trait SessionCache {
-    
+
   private lazy val sessionCache = CacheBuilder.newBuilder()
-    .expireAfterAccess(ApplicationConfig.sessionTimeout, TimeUnit.MILLISECONDS)    
+    .expireAfterAccess(ApplicationConfig.sessionTimeout, TimeUnit.MILLISECONDS)
     .asInstanceOf[CacheBuilder[String, SessionData]]
     .build[String, SessionData]()
     .asMap() // Concurrent map, fwiw
 
-  def getSession(sessionId: String):Option[SessionData] =
-    sessionCache.get(sessionId) match {
-    	case session:SessionData => Some(session)
-    	case _ => None // for null from Guava cache (Java land)
-  	}
+  def getSession(sessionId: String): Option[SessionData] =
+    Option(sessionCache.get(sessionId)) // Wrapped in Option() to handle null's
 
-  def setSession(sessionId: String, data: SessionData):Option[SessionData] =
-    sessionCache.put(sessionId, data) match {
-    	case session:SessionData => Some(session)
-    	case _ => None // for null from Guava cache (Java land)
-  	}
+  def setSession(sessionId: String, data: SessionData): Option[SessionData] =
+    Option(sessionCache.put(sessionId, data)) // Wrapped in Option() to handle null's
 
-  def removeSession(sessionId: String):Option[SessionData] =
-    Some(sessionCache.remove(sessionId))
+  def removeSession(sessionId: String): Option[SessionData] =
+    Option(sessionCache.remove(sessionId)) // Wrapped in Option() to handle null's
 
   def getRandomSessionId: String = {
     // Base-64 URL safe encoding (for the cookie value) and no chunking of

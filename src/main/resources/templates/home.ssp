@@ -1,3 +1,5 @@
+<%@ val session: com.kolich.spray.models.SessionData %>
+
 <!doctype html>
 <html>
 <head>
@@ -7,7 +9,12 @@
 
 <h2>Hello, world!</h2>
 
-<h3>Yay, you're logged in!</h3>
+<h3>You're logged in.</h3>
+
+<h4>Username: <%= session.username %></h4>
+<h4>Session ID: <%= session.id %></h4>
+
+<a href="logout">Logout</a>
 
 </body>
 </html>
