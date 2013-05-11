@@ -20,6 +20,8 @@ case class SessionCookie(token: String = "") {
 
 object SessionCookie {
 
+  // The name of the "session" cookie sent down to the client,
+  // usually a browser.
   private val sessionCookieName = "SESSION"
 
   // Incoming cookie looks like SESSION="foobar" (with quotes)
@@ -28,28 +30,34 @@ object SessionCookie {
 
   def apply(cookie: HttpCookie): SessionCookie =
     sessionCookieRegex.findFirstMatchIn(cookie.value) match {
-      // Cookie was found, return the value contained in the first capturing group
+      // Cookie was found, return the value contained in the first
+	  // capturing group.
       case Some(m) => apply(token = m.group(1))
-      // Input string value did not match regex, no cookie or malformed cookie header?
-      // Returns a new cookie with an empty "" token (will never match any session)
+      // Input string value did not match regex, no cookie or malformed
+      // cookie header? Returns a new cookie with an empty "" token (will
+      // never match any session).
       case _ => apply()
     }
 
   def getSessionCookieHeader(content: String = "",
     expires: Option[DateTime] = None,
-    maxAge: Option[Long] = None): `Set-Cookie` = `Set-Cookie`(
-    HttpCookie(name = sessionCookieName,
-      content = content,
-      expires = expires,
-      maxAge = maxAge,
-      secure = false,
-      httpOnly = true))
+    maxAge: Option[Long] = None): `Set-Cookie` =
+      `Set-Cookie`(HttpCookie(name = sessionCookieName,
+      	content = content,
+      	expires = expires,
+      	maxAge = maxAge,
+      	// Set "secure = true" if you want the "Secure" flag set on
+      	// outgoing cookies, meaning the cookie will only be accepted
+      	// over HTTPS (secure) connections.
+      	secure = false,
+      	httpOnly = true))
 
   def getUnsetSessionCookieHeader = getSessionCookieHeader(maxAge = Some(0L))
 
 }
 
-class UserAuthenticator[T](val authenticator: cookie.CookieAuthenticator[T])(implicit val ec: ExecutionContext) extends WebAppAuthenticator[T] {
+class UserAuthenticator[T](val authenticator: cookie.CookieAuthenticator[T])
+	(implicit val ec: ExecutionContext) extends WebAppAuthenticator[T] {
 
   override def authenticate(cookies: Option[Seq[HttpCookie]], ctx: RequestContext) = {
     authenticator {

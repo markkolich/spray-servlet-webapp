@@ -22,34 +22,37 @@ import HttpMethods._
 
 class WebAppService extends Actor with HttpServiceActor with Secure with ScalateSupport with Logging {
   
-  implicit val webAppServiceRejectionHandler = RejectionHandler.fromPF {
-    case MissingSessionCookieRejection() :: _ =>
-      complete(HttpResponse(status = Found, headers = List(Location(ApplicationConfig.rootPath + "/login"))))
-    case WebAppAuthenticationRejection() :: _ =>
-      complete(HttpResponse(status = Found, headers = List(Location(ApplicationConfig.rootPath + "/login"))))
-  }
-  
-  // Needs to be here because of the implicit ExecutionContext provided by Akka in this context.
+  // Needs to be here because of the implicit ExecutionContext
+  // provided by Akka in this context.
   private def webAppAuth[U](authenticator: CookieAuthenticator[U] = SessionCookieAuthenticator()) =
     new UserAuthenticator[U](authenticator)
+    
+  private def getRedirectToRoute(route: String): HttpResponse = {
+    HttpResponse(status = Found, headers = List(Location(ApplicationConfig.rootPath + route)))    
+  }
   
-  override def receive = runRoute {
+  implicit val webAppServiceRejectionHandler = RejectionHandler.fromPF {
+    case MissingSessionCookieRejection() :: _ => complete(getRedirectToRoute("/login"))
+    case WebAppAuthenticationRejection() :: _ => complete(getRedirectToRoute("/login"))
+  }
+  
+  override def receive = runRoute {    
     path("") {
       (get | post | put | delete) {
-        complete(HttpResponse(status = Found, headers = List(Location(ApplicationConfig.rootPath + "/home"))))
+        complete(getRedirectToRoute("/home"))
       }
-    } ~
+    } ~    
     path("home") {
       authenticate(webAppAuth()) { session =>
       	get {
       	  render("templates/home.ssp", Map("session" -> session))
       	}
       }
-    } ~
+    } ~    
     path ("login") {
       get {
         parameters("error"?) { (error:Option[String]) =>
-        	render("templates/login.ssp", Map("error" -> (error != None)))
+          render("templates/login.ssp", Map("error" -> (error != None)))
         }
       } ~
       post {
@@ -65,14 +68,16 @@ class WebAppService extends Actor with HttpServiceActor with Secure with Scalate
         	  }
         	  session match {
         	    case Some(session) => {
+        	    	logger.info("Created session (login), session ID: " +
+        	    	    session.id)
         	    	sessionCache.setSession(session.id, session)
         	    	respondWithHeader(getSessionCookieHeader(content = session.id)) {
-        	    		_.redirect(ApplicationConfig.rootPath + "/home")
+        	    		_.complete(getRedirectToRoute("/home"))
         	    	}
         	    }
         	    case _ => {
         	      respondWithHeader(getUnsetSessionCookieHeader) {
-        	    	  _.redirect(ApplicationConfig.rootPath + "/login?error=1")
+        	    	  _.complete(getRedirectToRoute("/login?error=1"))
         	      }
         	    }
         	  }
@@ -84,7 +89,7 @@ class WebAppService extends Actor with HttpServiceActor with Secure with Scalate
       (get | post | put | delete) {
           // Clobber session, then redirect to login page.  Sets a cookie
     	  // with an empty value ("") and sets its max-age to zero effectively
-    	  // telling the client (usually a browser) to delete it.
+    	  // telling the client (usually a browser) to delete the session cookie.
           respondWithHeader(getUnsetSessionCookieHeader) { ctx => {
               for {
                 `Cookie`(cookies) <- ctx.request.headers
@@ -95,18 +100,19 @@ class WebAppService extends Actor with HttpServiceActor with Secure with Scalate
                 // Remove the session from the internal session cache.
                 sessionCache.removeSession(sessionId) match {
                   case Some(session:SessionData) => {
-                	  logger.info("Removed web-session (logout) from session cache: " + session.id)
+                	  logger.info("Removed session (logout) from " +
+                	      "session cache: " + session.id)
                   }
                   case _ => {
                 	  // Ignore, silently.
                   }
                 }
               }
-              ctx.redirect(ApplicationConfig.rootPath + "/login")
+              ctx.complete(getRedirectToRoute("/login"))
             }
           }
       }
-    }
-  }
+    }    
+  } // runRoute
 
 }
