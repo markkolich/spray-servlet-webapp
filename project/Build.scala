@@ -27,11 +27,10 @@
 import sbt._
 import sbt.Keys._
 
-import com.github.siasia._
+import com.earldouglas.xsbtwebplugin._
+import PluginKeys._
 import WebPlugin._
 import WebappPlugin._
-import com.github.siasia.WebPlugin
-import com.github.siasia.PluginKeys._
 
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
 
