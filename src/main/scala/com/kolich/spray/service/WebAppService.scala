@@ -37,6 +37,8 @@ import com.kolich.spray.auth.cookie._
 import com.kolich.spray.templating._
 import com.kolich.spray.models._
 
+import com.kolich.spray.protocols._
+
 import akka.actor._
 import spray.util._
 import spray.http._
@@ -46,8 +48,10 @@ import spray.routing._
 import MediaTypes._
 import HttpMethods._
 
-class WebAppService extends Actor with HttpServiceActor with Secure with ScalateSupport with Logging {
+class WebAppService extends Controller {
   
+  import WebAppJsonFormat._ // Important; needed to import the JSON formatters into scope.
+    
   // Needs to be here because of the implicit ExecutionContext
   // provided by Akka in this context.
   private def webAppAuth[U](authenticator: CookieAuthenticator[U] = SessionCookieAuthenticator()) =
@@ -58,6 +62,7 @@ class WebAppService extends Actor with HttpServiceActor with Secure with Scalate
   }
   
   implicit val webAppServiceRejectionHandler = RejectionHandler.fromPF {
+    case Nil => complete(NotFound, "Foobar! Your default 404 page handler here.")
     case MissingSessionCookieRejection() :: _ => complete(getRedirectToRoute("/login"))
     case WebAppAuthenticationRejection() :: _ => complete(getRedirectToRoute("/login"))
   }
@@ -74,7 +79,12 @@ class WebAppService extends Actor with HttpServiceActor with Secure with Scalate
       	  render("templates/home.ssp", Map("session" -> session))
       	}
       }
-    } ~    
+    } ~
+    path("json") {
+      get {
+    	  _.complete(OK, java.net.URI.create("http://foobar.com"))
+      }
+    } ~
     path ("login") {
       get {
         parameters("error"?) { (error:Option[String]) =>
@@ -94,7 +104,7 @@ class WebAppService extends Actor with HttpServiceActor with Secure with Scalate
         	  }
         	  session match {
         	    case Some(session) => {
-        	    	logger.info("Created session (login), session ID: " + session)
+        	    	logger.info("Created session (login): " + session)
         	    	sessionCache.setSession(session.id, session)
         	    	respondWithHeader(getSessionCookieHeader(content = session.id)) {
         	    		_.complete(getRedirectToRoute("/home"))
@@ -125,8 +135,7 @@ class WebAppService extends Actor with HttpServiceActor with Secure with Scalate
                 // Remove the session from the internal session cache.
                 sessionCache.removeSession(sessionId) match {
                   case Some(session:SessionData) => {
-                	  logger.info("Removed session (logout) from " +
-                	      "session cache: " + session)
+                	  logger.info("Removed session (logout): " + session)
                   }
                   case _ => {
                 	  // Ignore, silently.
@@ -137,7 +146,7 @@ class WebAppService extends Actor with HttpServiceActor with Secure with Scalate
             }
           }
       }
-    }    
+    }
   } // runRoute
 
 }
