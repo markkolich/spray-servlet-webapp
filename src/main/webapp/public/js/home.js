@@ -1,0 +1,4 @@
+
+Ext.onDocumentReady(function() {
+	// todo ...
+});

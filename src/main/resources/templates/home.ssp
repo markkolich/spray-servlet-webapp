@@ -4,23 +4,22 @@
 <html>
 <head>
 	<title>Hello, world!</title>
-	<script src="../public/vendor/ext-all.js"></script>	
+	<script src="../public/vendor/ext-all.js"></script>
+	<script src="../public/js/home.js"></script>
 	<link rel="stylesheet" type="text/css" href="../public/vendor/resources/css/ext-all.css" />
 </head>
 <body>
 
 <h2>Hello, world!</h2>
 
-<p><img src="../public/images/kitten.jpg"></p>
-
 <h3>You're logged in.</h3>
 
 <h4>Username: <%= session.username %></h4>
 <h4>Session ID: <%= session.id %></h4>
 
-<a href="logout">Logout</a>
+<p><img src="../public/images/kitten.jpg"></p>
 
-<script src="../public/js/home.js"></script>
+<a href="logout">Logout</a>
 
 </body>
 </html>
