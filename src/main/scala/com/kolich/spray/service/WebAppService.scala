@@ -50,7 +50,7 @@ import HttpMethods._
 
 class WebAppService extends Controller {
   
-  import WebAppJsonFormat._ // Important; needed to import the JSON formatters into scope.
+  import WebAppJsonFormat._ // Important; needed to bring the JSON formatters into scope.
     
   // Needs to be here because of the implicit ExecutionContext
   // provided by Akka in this context.

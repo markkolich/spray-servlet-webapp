@@ -68,6 +68,7 @@ object Dependencies {
   private val sprayJson = "io.spray" % "spray-json_2.10" % "1.2.3" % "compile"
   
   private val scalate = "org.fusesource.scalate" % "scalate-core_2.10" % "1.6.1" % "compile"
+  private val commonsLang3  = "org.apache.commons" % "commons-lang3" % "3.1" % "compile"
   
   val deps = Seq(kolichCommon,
     jettyWebApp, jettyPlus, jettyJsp,
@@ -76,7 +77,8 @@ object Dependencies {
     logback, logbackClassic, slf4j, jclOverSlf4j, slf4s,
     akkaActor, akkaSlf4j,
     sprayServlet, sprayJson, sprayRouting,
-    scalate)
+    scalate,
+    commonsLang3)
 
 }
 

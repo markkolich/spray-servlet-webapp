@@ -26,19 +26,37 @@
 
 package com.kolich.spray.protocols
 
-import spray.json._
-import spray.httpx._
+import java.lang.StringBuilder
 
-trait WebAppJsonProtocol extends DefaultJsonProtocol with HtmlSafeSprayJsonSupport {
-  
-  object WebAppJsonFormat {
-    
-    implicit object URIFormat extends RootJsonFormat[java.net.URI] {
-    	def write(u: java.net.URI) = JsString(u.toString)
-		def read(value: JsValue) = java.net.URI.create(value.toString)
+import org.apache.commons.lang3.StringEscapeUtils.escapeHtml4
+
+import spray.http._
+import spray.httpx._
+import spray.httpx.marshalling.Marshaller
+import spray.json._
+
+sealed trait HtmlSafeCompactJsonPrinter extends CompactPrinter {
+
+  override def print(x: JsValue, sb: StringBuilder) {
+    x match {
+      case JsString(x) => printString(escapeHtml4(x), sb)
+      case _ => super.print(x, sb)
     }
-    
   }
-  
+
 }
 
+object HtmlSafeCompactJsonPrinter extends HtmlSafeCompactJsonPrinter
+
+trait HtmlSafeSprayJsonSupport extends SprayJsonSupport {
+
+  override implicit def sprayJsonMarshaller[T](implicit writer: RootJsonWriter[T], printer: JsonPrinter = PrettyPrinter) =
+    Marshaller.delegate[T, String](ContentType.`application/json`) { value =>
+      lazy val printer = HtmlSafeCompactJsonPrinter
+      val json = writer.write(value)
+      printer(json)
+    }
+
+}
+
+object HtmlSafeSprayJsonSupport extends HtmlSafeSprayJsonSupport
