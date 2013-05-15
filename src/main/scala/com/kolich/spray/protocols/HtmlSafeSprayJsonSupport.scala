@@ -58,5 +58,3 @@ trait HtmlSafeSprayJsonSupport extends SprayJsonSupport {
     }
 
 }
-
-object HtmlSafeSprayJsonSupport extends HtmlSafeSprayJsonSupport

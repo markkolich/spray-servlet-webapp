@@ -27,6 +27,7 @@
 package com.kolich.spray.auth
 
 import scala.concurrent.ExecutionContext
+
 import scala.concurrent.Future
 
 import com.kolich.spray.auth.cookie.CookieAuthenticator
@@ -34,7 +35,9 @@ import com.kolich.spray.models.SessionData
 
 trait Secure {
   
-  protected val sessionCache = SessionCache
+  object WebAppSessionCache extends SessionCache[SessionData] // Singleton
+  
+  protected val sessionCache = WebAppSessionCache
 
   object SessionCookieAuthenticator {
     def apply()(implicit ec: ExecutionContext): CookieAuthenticator[SessionData] = {

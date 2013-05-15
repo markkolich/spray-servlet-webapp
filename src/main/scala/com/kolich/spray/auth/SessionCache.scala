@@ -40,21 +40,21 @@ import com.kolich.spray._
 import com.kolich.spray.models._
 
 // In memory session cache, backed by Google's CacheBuilder.
-sealed trait SessionCache {
+trait SessionCache[T] {
 
   private lazy val sessionCache = CacheBuilder.newBuilder()
     .expireAfterAccess(ApplicationConfig.sessionTimeout, TimeUnit.MILLISECONDS)
-    .asInstanceOf[CacheBuilder[String, SessionData]]
-    .build[String, SessionData]()
+    .asInstanceOf[CacheBuilder[String, T]]
+    .build[String, T]()
     .asMap() // Concurrent map, fwiw
 
-  def getSession(sessionId: String): Option[SessionData] =
+  def getSession(sessionId: String): Option[T] =
     Option(sessionCache.get(sessionId)) // Wrapped in Option() to handle null's
 
-  def setSession(sessionId: String, data: SessionData): Option[SessionData] =
+  def setSession(sessionId: String, data: T): Option[T] =
     Option(sessionCache.put(sessionId, data)) // Wrapped in Option() to handle null's
 
-  def removeSession(sessionId: String): Option[SessionData] =
+  def removeSession(sessionId: String): Option[T] =
     Option(sessionCache.remove(sessionId)) // Wrapped in Option() to handle null's
 
   def getRandomSessionId: String = {
@@ -64,5 +64,3 @@ sealed trait SessionCache {
   }
 
 }
-
-object SessionCache extends SessionCache
