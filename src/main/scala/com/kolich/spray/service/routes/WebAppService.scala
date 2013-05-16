@@ -52,9 +52,15 @@ import spray.routing.directives.CompletionMagnet.fromHttpResponse
 import spray.routing.directives.FieldDefMagnet.apply
 import spray.routing.directives.ParamDefMagnet.apply
 
-class WebApp extends WebService {
+class WebAppService extends Service {
   
   import WebAppJsonFormat._ // Important; needed to bring the JSON formatters into scope.
+  
+  override implicit val rejectionHandler: RejectionHandler = RejectionHandler.fromPF {
+    case Nil => complete(NotFound, "Foobar! Your default 404 page handler here.")
+    case MissingSessionCookieRejection() :: _ => complete(redirectToRoute("/login"))
+    case WebAppAuthenticationRejection() :: _ => complete(redirectToRoute("/login"))
+  }
   
   override def receive = runRoute {
     path("") {
@@ -63,7 +69,7 @@ class WebApp extends WebService {
       }
     } ~
     path("home") {
-      authenticate(webAppAuth()) { session =>
+      authenticate(authenticator()) { session =>
       	get {
       	  render("templates/home.ssp", Map("publicResourcePath" -> getPublicResourcePath, "session" -> session))
       	}

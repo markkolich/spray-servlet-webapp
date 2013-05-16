@@ -55,7 +55,7 @@ trait Service
     
   // Needs to be here because of the implicit ExecutionContext
   // provided by Akka in this context.
-  protected def webAppAuth[U](authenticator: CookieAuthenticator[U] = SessionCookieAuthenticator()) =
+  protected def authenticator[U](authenticator: CookieAuthenticator[U] = SessionCookieAuthenticator()) =
     new UserAuthenticator[U](authenticator)
   
   protected def redirectToRoute(route: String): HttpResponse = {
