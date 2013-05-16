@@ -41,4 +41,3 @@ trait WebAppJsonProtocol extends DefaultJsonProtocol with HtmlSafeSprayJsonSuppo
   }
   
 }
-

@@ -48,31 +48,16 @@ import spray.routing._
 import MediaTypes._
 import HttpMethods._
 
-class WebAppService extends Controller {
+class WebAppService extends WebController {
   
   import WebAppJsonFormat._ // Important; needed to bring the JSON formatters into scope.
-    
-  // Needs to be here because of the implicit ExecutionContext
-  // provided by Akka in this context.
-  private def webAppAuth[U](authenticator: CookieAuthenticator[U] = SessionCookieAuthenticator()) =
-    new UserAuthenticator[U](authenticator)
-    
-  private def getRedirectToRoute(route: String): HttpResponse = {
-    HttpResponse(status = Found, headers = List(Location(ApplicationConfig.rootPath + route)))    
-  }
   
-  implicit val webAppServiceRejectionHandler = RejectionHandler.fromPF {
-    case Nil => complete(NotFound, "Foobar! Your default 404 page handler here.")
-    case MissingSessionCookieRejection() :: _ => complete(getRedirectToRoute("/login"))
-    case WebAppAuthenticationRejection() :: _ => complete(getRedirectToRoute("/login"))
-  }
-  
-  override def receive = runRoute {    
+  override def receive = runRoute {
     path("") {
       (get | post | put | delete) {
-        complete(getRedirectToRoute("/home"))
+        complete(redirectToRoute("/home"))
       }
-    } ~    
+    } ~
     path("home") {
       authenticate(webAppAuth()) { session =>
       	get {
@@ -107,12 +92,12 @@ class WebAppService extends Controller {
         	    	logger.info("Created session (login): " + session)
         	    	sessionCache.setSession(session.id, session)
         	    	respondWithHeader(getSessionCookieHeader(content = session.id)) {
-        	    		_.complete(getRedirectToRoute("/home"))
+        	    		_.complete(redirectToRoute("/home"))
         	    	}
         	    }
         	    case _ => {
         	      respondWithHeader(getUnsetSessionCookieHeader) {
-        	    	  _.complete(getRedirectToRoute("/login?error=1"))
+        	    	  _.complete(redirectToRoute("/login?error=1"))
         	      }
         	    }
         	  }
@@ -142,7 +127,7 @@ class WebAppService extends Controller {
                   }
                 }
               }
-              ctx.complete(getRedirectToRoute("/login"))
+              ctx.complete(redirectToRoute("/login"))
             }
           }
       }
