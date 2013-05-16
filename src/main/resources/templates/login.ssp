@@ -1,15 +1,16 @@
+<%@ val resourcePath: String = "/" %>
 <%@ val error: Boolean = false  %>
 
 <!doctype html>
 <html>
 <head>
 	<title>Login</title>
-	<script src="../public/vendor/ext-all.js"></script>	
-	<link rel="stylesheet" type="text/css" href="../public/vendor/resources/css/ext-all.css" />
+	<script src="<%= resourcePath %>/vendor/ext-all.js"></script>	
+	<link rel="stylesheet" type="text/css" href="<%= resourcePath %>/vendor/resources/css/ext-all.css" />
 </head>
 <body>
 
-	<script src="../public/js/login.js"></script>
+	<script src="<%= resourcePath %>/js/login.js"></script>
 
 </body>
 </html>

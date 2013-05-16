@@ -1,12 +1,13 @@
+<%@ val resourcePath: String = "/" %>
 <%@ val session: com.kolich.spray.models.SessionData %>
 
 <!doctype html>
 <html>
 <head>
 	<title>Hello, world!</title>
-	<script src="../public/vendor/ext-all.js"></script>
-	<script src="../public/js/home.js"></script>
-	<link rel="stylesheet" type="text/css" href="../public/vendor/resources/css/ext-all.css" />
+	<script src="<%= resourcePath %>/vendor/ext-all.js"></script>
+	<script src="<%= resourcePath %>/js/home.js"></script>
+	<link rel="stylesheet" type="text/css" href="<%= resourcePath %>/vendor/resources/css/ext-all.css" />
 </head>
 <body>
 
@@ -17,7 +18,7 @@
 <h4>Username: <%= session.username %></h4>
 <h4>Session ID: <%= session.id %></h4>
 
-<p><img src="../public/images/kitten.jpg"></p>
+<p><img src="<%= resourcePath %>/images/kitten.jpg"></p>
 
 <a href="logout">Logout</a>
 

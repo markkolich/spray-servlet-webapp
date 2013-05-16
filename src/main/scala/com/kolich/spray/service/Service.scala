@@ -26,6 +26,14 @@
 
 package com.kolich.spray.service
 
+import com.weiglewilczek.slf4s.{Logging, Logger}
+
+import com.kolich.spray._
+import com.kolich.spray.auth._
+import com.kolich.spray.auth.cookie._
+import com.kolich.spray.templating._
+import com.kolich.spray.protocols._
+
 import akka.actor._
 import spray.routing._
 import spray.util._
@@ -35,17 +43,23 @@ import spray.http.StatusCodes._
 import MediaTypes._
 import HttpMethods._
 
-import com.kolich.spray.auth._
-import com.kolich.spray.auth.cookie._
-import com.kolich.spray.templating._
-import com.kolich.spray.protocols._
-
-trait WebController extends Controller {
+trait Service
+	extends Actor
+	with HttpServiceActor
+	with Secure
+	with ScalateSupport
+	with JsonProtocols
+	with Logging {
   
-  override implicit val rejectionHandler: RejectionHandler = RejectionHandler.fromPF {
-    case Nil => complete(NotFound, "Foobar! Your default 404 page handler here.")
-    case MissingSessionCookieRejection() :: _ => complete(redirectToRoute("/login"))
-    case WebAppAuthenticationRejection() :: _ => complete(redirectToRoute("/login"))
+  implicit def rejectionHandler: RejectionHandler
+    
+  // Needs to be here because of the implicit ExecutionContext
+  // provided by Akka in this context.
+  protected def webAppAuth[U](authenticator: CookieAuthenticator[U] = SessionCookieAuthenticator()) =
+    new UserAuthenticator[U](authenticator)
+  
+  protected def redirectToRoute(route: String): HttpResponse = {
+    HttpResponse(status = Found, headers = List(Location(ApplicationConfig.rootPath + route)))    
   }
-
+  
 }

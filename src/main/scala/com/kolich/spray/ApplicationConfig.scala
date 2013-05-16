@@ -43,7 +43,9 @@ object ApplicationConfig {
   }
 
   final lazy val sessionTimeout: Long = appConfig getMilliseconds "session-timeout"
+  
+  final lazy val publicResourcePath: String = appConfig getString "public-resource-path"
 
-  final lazy val rootPath: String = sprayConfig getString "root-path" 
+  final lazy val rootPath: String = sprayConfig getString "root-path"
 
 }

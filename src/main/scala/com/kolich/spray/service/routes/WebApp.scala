@@ -24,31 +24,35 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.kolich.spray.service
+package com.kolich.spray.service.routes
 
 import scala.concurrent.duration._
 
-import com.weiglewilczek.slf4s.{Logging, Logger}
-
 import com.kolich.spray._
+import com.kolich.spray.service._
 import com.kolich.spray.auth._
 import com.kolich.spray.auth.SessionCookie._
 import com.kolich.spray.auth.cookie._
 import com.kolich.spray.templating._
 import com.kolich.spray.models._
-
 import com.kolich.spray.protocols._
 
 import akka.actor._
+
 import spray.util._
 import spray.http._
 import spray.http.HttpHeaders._
 import spray.http.StatusCodes._
 import spray.routing._
-import MediaTypes._
-import HttpMethods._
+import spray.http.MediaTypes._
+import spray.http.HttpMethods._
+import spray.routing.Directive.pimpApply
+import spray.routing.directives.AuthMagnet.fromContextAuthenticator
+import spray.routing.directives.CompletionMagnet.fromHttpResponse
+import spray.routing.directives.FieldDefMagnet.apply
+import spray.routing.directives.ParamDefMagnet.apply
 
-class WebAppService extends WebController {
+class WebApp extends WebService {
   
   import WebAppJsonFormat._ // Important; needed to bring the JSON formatters into scope.
   
@@ -63,11 +67,6 @@ class WebAppService extends WebController {
       	get {
       	  render("templates/home.ssp", Map("session" -> session))
       	}
-      }
-    } ~
-    path("json") {
-      get {
-    	  _.complete(OK, java.net.URI.create("http://foobar.com"))
       }
     } ~
     path ("login") {
