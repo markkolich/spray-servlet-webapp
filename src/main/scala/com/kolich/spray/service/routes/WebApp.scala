@@ -65,14 +65,14 @@ class WebApp extends WebService {
     path("home") {
       authenticate(webAppAuth()) { session =>
       	get {
-      	  render("templates/home.ssp", Map("session" -> session))
+      	  render("templates/home.ssp", Map("publicResourcePath" -> getPublicResourcePath, "session" -> session))
       	}
       }
     } ~
     path ("login") {
       get {
         parameters("error"?) { (error:Option[String]) =>
-          render("templates/login.ssp", Map("error" -> (error != None)))
+          render("templates/login.ssp", Map("publicResourcePath" -> getPublicResourcePath, "error" -> (error != None)))
         }
       } ~
       post {

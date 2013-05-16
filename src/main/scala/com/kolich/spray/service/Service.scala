@@ -62,4 +62,6 @@ trait Service
     HttpResponse(status = Found, headers = List(Location(ApplicationConfig.rootPath + route)))    
   }
   
+  protected def getPublicResourcePath: String = ApplicationConfig.publicResourcePath
+  
 }
