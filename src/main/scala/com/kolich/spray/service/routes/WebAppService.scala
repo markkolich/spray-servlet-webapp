@@ -39,23 +39,16 @@ import com.kolich.spray.protocols._
 
 import akka.actor._
 
+import spray.routing._
 import spray.util._
 import spray.http._
 import spray.http.HttpHeaders._
 import spray.http.StatusCodes._
-import spray.routing._
 import spray.http.MediaTypes._
 import spray.http.HttpMethods._
-import spray.routing.Directive.pimpApply
-import spray.routing.directives.AuthMagnet.fromContextAuthenticator
-import spray.routing.directives.CompletionMagnet.fromHttpResponse
-import spray.routing.directives.FieldDefMagnet.apply
-import spray.routing.directives.ParamDefMagnet.apply
 
 class WebAppService extends Service {
-  
-  import WebAppJsonFormat._ // Important; needed to bring the JSON formatters into scope.
-  
+    
   override implicit val rejectionHandler: RejectionHandler = RejectionHandler.fromPF {
     case Nil => complete(NotFound, "Foobar! Your default 404 page handler here.")
     case MissingSessionCookieRejection() :: _ => complete(redirectToRoute("/login"))

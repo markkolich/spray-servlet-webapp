@@ -61,6 +61,8 @@ Ext.define('Viewport', {
     extend: 'Ext.container.Viewport',
     alias: 'viewport',
 
+    border: false,
+    frame: false,
     layout: 'fit',
     
     items: [{

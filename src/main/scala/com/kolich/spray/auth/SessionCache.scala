@@ -39,6 +39,8 @@ import org.apache.commons.codec.binary.StringUtils._
 import com.kolich.spray._
 import com.kolich.spray.models._
 
+object WebAppSessionCache extends SessionCache[SessionData] // Singleton
+
 // In memory session cache, backed by Google's CacheBuilder.
 trait SessionCache[T] {
 

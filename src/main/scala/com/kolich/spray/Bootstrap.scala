@@ -32,13 +32,28 @@ import com.kolich.spray.service._
 import com.kolich.spray.service.routes._
 
 import akka.actor._
+import akka.routing._
 
 import spray.servlet._
+import spray.routing._
 
-class Boot extends WebBoot with Logging {
+class Bootstrap extends WebBoot with Logging {
 
   val system = ActorSystem("spray-servlet-webapp")
-
-  val serviceActor = system.actorOf(Props[WebAppService])
-
+  
+  val ajaxApiService = system.actorOf(Props[AjaxApiService])
+  val webAppService = system.actorOf(Props[WebAppService])
+    
+  class RootServiceActor extends Actor with HttpServiceActor {
+    override def receive = runRoute {
+      pathPrefix("api") {
+    	  ajaxApiService ! _
+      } ~ {
+    	  webAppService ! _
+      }
+    }
+  }
+  
+  val serviceActor = system.actorOf(Props(new RootServiceActor))
+  
 }
