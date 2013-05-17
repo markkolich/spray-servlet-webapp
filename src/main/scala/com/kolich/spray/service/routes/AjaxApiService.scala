@@ -31,7 +31,6 @@ class AjaxApiService extends Service {
   
   override def receive = runRoute {
 	  path("") {
-		  logger.warn("-----here")
 		  authenticate(authenticator()) { session =>
 	  		get {
 	  			_.complete("sup dude")
