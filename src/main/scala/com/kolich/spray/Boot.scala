@@ -43,7 +43,7 @@ class Boot extends WebBoot with Logging {
   
   val ajaxApiService = system.actorOf(Props[AjaxApiService])
   val webAppService = system.actorOf(Props[WebAppService])
-    
+  
   class RootServiceActor extends Actor with HttpServiceActor {
     override def receive = runRoute {
       pathPrefix("api") {
