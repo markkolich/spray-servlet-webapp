@@ -26,6 +26,7 @@
 
 package com.kolich.spray.service.routes
 
+import scala.language.postfixOps
 import scala.concurrent.duration._
 
 import com.kolich.spray._
