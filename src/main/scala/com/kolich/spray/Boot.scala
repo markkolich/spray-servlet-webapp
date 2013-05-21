@@ -47,8 +47,15 @@ class Boot extends WebBoot with Logging {
   class RootServiceActor extends Actor with HttpServiceActor {
     override def receive = runRoute {
       pathPrefix("api") {
+    	  // Any requests that start with "api" are forwarded to the AJAX
+    	  // API service actor.  Note that starts with "api" does not
+    	  // include the Spray "root-path".  For example, for a raw HTTP
+    	  // request of GET:/app/api/foobar.json the starts with "api" only
+    	  // applies to to the "/api/foobar.json" piece of the URI.
     	  ajaxApiService ! _
       } ~ {
+    	  // Any other request that does not start with "api" is
+    	  // sent here, the generic web-app service.
     	  webAppService ! _
       }
     }

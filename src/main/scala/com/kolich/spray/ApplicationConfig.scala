@@ -30,7 +30,7 @@ import com.typesafe.config.{ ConfigFactory, Config }
 
 object ApplicationConfig {
 
-  val c = ConfigFactory.load()
+  private val c: Config = ConfigFactory.load()
 
   private[this] val appConfig: Config = {
     c.checkValid(ConfigFactory.defaultReference(), "webapp.demo")

@@ -33,9 +33,7 @@ import scala.concurrent.Future
 import com.kolich.spray.auth.cookie.CookieAuthenticator
 import com.kolich.spray.models.SessionData
 
-trait Secure {
-  
-  object WebAppSessionCache extends SessionCache[SessionData] // Singleton
+trait Secure {  
   
   protected val sessionCache = WebAppSessionCache
 

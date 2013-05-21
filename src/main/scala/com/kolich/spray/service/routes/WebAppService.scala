@@ -52,8 +52,8 @@ class WebAppService extends Service {
     
   override implicit val rejectionHandler: RejectionHandler = RejectionHandler.fromPF {
     case Nil => complete(NotFound, "Foobar! Your default 404 page handler here.")
-    case MissingSessionCookieRejection() :: _ => complete(redirectToRoute("/login"))
-    case WebAppAuthenticationRejection() :: _ => complete(redirectToRoute("/login"))
+    case MissingSessionCookieRejection() :: _ => complete(redirectToRoute("/logout"))
+    case WebAppAuthenticationRejection() :: _ => complete(redirectToRoute("/logout"))
   }
   
   override def receive = runRoute {
