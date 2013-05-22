@@ -7,10 +7,30 @@
 	<title>Login</title>
 	<script src="<%= publicResourcePath %>/vendor/ext-all.js"></script>	
 	<link rel="stylesheet" type="text/css" href="<%= publicResourcePath %>/vendor/resources/css/ext-all.css" />
+	<link rel="stylesheet" type="text/css" href="<%= publicResourcePath %>/css/app.css" />
 </head>
 <body>
 
-	<script src="<%= publicResourcePath %>/js/login.js"></script>
+<h2>Login</h2>
+
+#if (error)
+	<p class="error">Invalid username and or password.</p>
+	<p class="tip">Tip: enter any username you want, and "foobar" (no quotes) as the password.</p>
+#end
+
+<form method="post" action="login">
+	<p>
+		<label for="username">Username:</label>
+		<input type="text" id="username" name="username" />
+	</p>
+	<p>
+		<label for="password">Password:</label>
+		<input type="password" id="password" name="password" />
+	</p>
+	<p>
+		<input type="submit" value="Login" />
+	</p>
+</form>
 
 </body>
 </html>

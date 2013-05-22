@@ -1,0 +1,12 @@
+body {
+	padding: 0 10px 0 10px;
+}
+
+p.error {
+	font-weight: bold;
+	color: red;
+}
+
+p.tip {
+	font-weight: bold;
+}

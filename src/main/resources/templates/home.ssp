@@ -6,8 +6,8 @@
 <head>
 	<title>Hello, world!</title>
 	<script src="<%= publicResourcePath %>/vendor/ext-all.js"></script>
-	<script src="<%= publicResourcePath %>/js/home.js"></script>
 	<link rel="stylesheet" type="text/css" href="<%= publicResourcePath %>/vendor/resources/css/ext-all.css" />
+	<link rel="stylesheet" type="text/css" href="<%= publicResourcePath %>/css/app.css" />
 </head>
 <body>
 
@@ -15,12 +15,27 @@
 
 <h3>You're logged in.</h3>
 
-<h4>Username: <%= session.username %></h4>
-<h4>Session ID: <%= session.id %></h4>
+<p>
+	<h3>Here's some data loaded from the web-session, rendered via the "home.ssp" Scalate template:</h3>
+	<ul>
+		<li>Username: <%= session.username %></li>
+		<li>Session ID: <%= session.id %></li>
+	</ul>
+</p>
 
-<p><img src="<%= publicResourcePath %>/images/kitten.jpg"></p>
+<p>
+	<h3>Here's a cute image, showing the use of the container's default servlet to serve "static" content:</h3>
+	<p><img src="<%= publicResourcePath %>/images/kitten.jpg"></p>
+</p>
+
+<p>
+	<h3>Here's an ExtJS grid panel that's rendered using JSON as fetched from Spray:</h3>
+	<div id="gridpanel-demo"></div>
+</p>
 
 <a href="logout">Logout</a>
+
+<script src="<%= publicResourcePath %>/js/home.js"></script>
 
 </body>
 </html>
