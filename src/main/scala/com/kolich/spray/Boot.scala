@@ -40,7 +40,7 @@ import spray.routing._
 class Boot extends WebBoot with Logging {
 
   val system = ActorSystem("spray-servlet-webapp")
-  
+    
   val ajaxApiService = system.actorOf(Props[AjaxApiService])
   val webAppService = system.actorOf(Props[WebAppService])
   
@@ -62,5 +62,9 @@ class Boot extends WebBoot with Logging {
   }
   
   val serviceActor = system.actorOf(Props(new RootServiceActor))
+  
+  system.registerOnTermination {
+	  system.shutdown
+  }
   
 }
