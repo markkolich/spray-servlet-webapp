@@ -159,9 +159,8 @@ object SprayServletWebapp extends Build {
           // Overrides the default context path used for this project.  By
           // default, the context path is "/", but here we're overriding that
           // configuration so the application is available under "/spray"
-          // instead.  Note that this maps closely to the "spray.servlet.root-path"
-          // and "webapp.public-resource-path" configuration properties in
-          // the root "application.conf" config file.
+          // instead.  Note that this maps directly to the "webapp.context"
+          // configuration property in our root "application.conf".
           apps in container.Configuration <<= (deployment in DefaultConf) map {
         	  d => Seq("/spray" -> d)
           },
