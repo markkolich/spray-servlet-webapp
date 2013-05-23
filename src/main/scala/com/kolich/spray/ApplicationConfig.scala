@@ -33,8 +33,8 @@ object ApplicationConfig {
   private val c: Config = ConfigFactory.load()
 
   private[this] val appConfig: Config = {
-    c.checkValid(ConfigFactory.defaultReference(), "webapp.demo")
-    c.getConfig("webapp.demo")
+    c.checkValid(ConfigFactory.defaultReference(), "webapp")
+    c.getConfig("webapp")
   }
 
   private[this] val sprayConfig: Config = {

@@ -10,7 +10,7 @@
 
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-		<param-value>havalo.root</param-value>
+		<param-value>spray-servlet-webapp.root</param-value>
 	</context-param>
 	
 	<!--

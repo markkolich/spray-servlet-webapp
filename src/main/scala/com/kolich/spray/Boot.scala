@@ -64,7 +64,12 @@ class Boot extends WebBoot with Logging {
   val serviceActor = system.actorOf(Props(new RootServiceActor))
   
   system.registerOnTermination {
-	  system.shutdown
+    system.log.info("===== Actor system shutting down...")
+    //system.stop(ajaxApiService)
+    //system.stop(webAppService)
+    //system.stop(serviceActor)
+    //logger.info("Done stopping actors...")
+    system.shutdown
   }
   
 }
