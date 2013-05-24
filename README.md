@@ -6,7 +6,7 @@ On a recent project, I spent quite a bit of time plugging together a production 
 
 The Spray documentation is excellent, and this project is intended to supplement that documentation with a complete and robust example that illustrates how a number of Spray concepts integrate into a web-application.
 
-Note, this example project uses `spray-servlet` and ultimately compiles and packages the web-application into a `.war` file, deployable in most Servlet 3.0 containers.  Of course, if you're not using a Servlet container to deploy your application, you can certainly extend the concepts herein to your server of choice &mdash; perhaps something like `spray-can`.
+Note, this example project uses `spray-servlet` and ultimately compiles and packages the web-application into a `.war` file, deployable in most Servlet 3.0 containers.  Of course, if you're not using a Servlet container to deploy your application, you can certainly extend the concepts herein to your server of choice &mdash; perhaps something like <a href="http://spray.io/documentation/spray-can/">spray-can</a>.
 
 Feedback and pull requests always welcome.
 
