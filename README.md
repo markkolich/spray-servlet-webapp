@@ -34,11 +34,11 @@ This project is built and managed using <a href="https://github.com/harrah/xsbt"
 
 To clone and build this project, you must have <a href="http://www.scala-sbt.org/release/docs/Getting-Started/Setup">SBT installed and configured on your computer</a>.
 
-To run, clone the repository.
+To start, clone the repository.
 
     #~> git clone git://github.com/markkolich/spray-servlet-webapp.git
 
-Run SBT from within your newly cloned *spray-servlet-webapp* directory.
+Run `sbt` from within your newly cloned *spray-servlet-webapp* directory.
 
     #~> cd spray-servlet-webapp
     #~/spray-servlet-webapp> sbt
@@ -59,7 +59,7 @@ To stop the development server, run `container:stop`.
 
 See the <a href="https://github.com/JamesEarlDouglas/xsbt-web-plugin/wiki">xsbt-web-plugin wiki</a> for all of the gory details on managing the development servlet container from SBT.
 
-In SBT, run `package` to build a deployable WAR for your favorite Servlet container.
+To build a deployable WAR for your favorite Servlet container, run `package` in SBT.
 
     spray-servlet-webapp:1.0> package
     ...
@@ -78,9 +78,7 @@ To create an Eclipse project, run `eclipse` in SBT.
     [info] Successfully created Eclipse project files for project(s):
     [info] spray-servlet-webapp
 
-You'll now have a real Eclipse **.project** file worthy of an Eclipse import.
-
-Note your new **.classpath** file as well &mdash; all source JAR's are fetched and injected into the Eclipse project automatically.
+You'll now have a real Eclipse **.project** file worthy of an Eclipse import.  Note your new **.classpath** file as well &mdash; all source JAR's are fetched and injected into the Eclipse project automatically.
 
 ## Licensing
 
