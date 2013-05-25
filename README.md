@@ -27,3 +27,65 @@ In this project, you'll find reasonably complete demonstrations of the following
 * Straightforward user authentication using Spray's `authenticate` directive with cookie based session support.  Like you would expect, the user has to be "logged in" to access specific paths and content, which is managed here using session cookies and an in-memory session map.  See the <a href="https://github.com/markkolich/spray-servlet-webapp/tree/master/src/main/scala/com/kolich/spray/auth">com.kolich.spray.auth</a> package.
 
 * Realistic JSON support, which demonstrates how to use <a href="https://github.com/spray/spray-json">spray-json</a> to unmarshall JSON into case classes (on requests), and marshall case classes back into JSON (for responses).  See the <a href="https://github.com/markkolich/spray-servlet-webapp/tree/master/src/main/scala/com/kolich/spray/protocols">com.kolich.spray.protocols</a> package.
+
+## Bootstrap
+
+This project is built and managed using <a href="https://github.com/harrah/xsbt">SBT 0.12.2</a>.
+
+To clone and build this project, you must have <a href="http://www.scala-sbt.org/release/docs/Getting-Started/Setup">SBT installed and configured on your computer</a>.
+
+To run, clone the repository.
+
+    #~> git clone git://github.com/markkolich/spray-servlet-webapp.git
+
+Run SBT from within your newly cloned *spray-servlet-webapp* directory.
+
+    #~> cd spray-servlet-webapp
+    #~/spray-servlet-webapp> sbt
+    ...
+    spray-servlet-webapp:1.0>
+
+You will see a `spray-servlet-webapp` SBT prompt once all dependencies are resolved and the project is loaded.
+
+In SBT, run `container:start` to start the local Servlet container.  By default the server listens on **port 8080**.
+
+    spray-servlet-webapp:1.0> container:start
+    [info] jetty-8.1.10.v20130312
+    [info] Started SelectChannelConnector@0.0.0.0:8080
+
+In your nearest web-browser, visit <a href="http://localhost:8080/spray">http://localhost:8080/spray</a> and you should see the login page prompting you for a username and password.
+
+To stop the development server, run `container:stop`.
+
+See the <a href="https://github.com/JamesEarlDouglas/xsbt-web-plugin/wiki">xsbt-web-plugin wiki</a> for all of the gory details on managing the development servlet container from SBT.
+
+In SBT, run `package` to build a deployable WAR for your favorite Servlet container.
+
+    spray-servlet-webapp:1.0> package
+    ...
+    [info] Compiling 20 Scala sources to ~/spray-servlet-webapp/target/classes...
+    [info] Packaging ~/spray-servlet-webapp/dist/spray-servlet-webapp-1.0.jar ...
+    [info] Done packaging.
+    [info] Packaging ~/spray-servlet-webapp/dist/spray-servlet-webapp-1.0.war ...
+    [info] Done packaging.
+
+Note the resulting WAR is placed into the **spray-servlet-webapp/dist** directory.  Deploy and enjoy.
+
+To create an Eclipse project, run `eclipse` in SBT.
+
+    spray-servlet-webapp:1.0> eclipse
+    ...
+    [info] Successfully created Eclipse project files for project(s):
+    [info] spray-servlet-webapp
+
+You'll now have a real Eclipse **.project** file worthy of an Eclipse import.
+
+Note your new **.classpath** file as well &mdash; all source JAR's are fetched and injected into the Eclipse project automatically.
+
+## Licensing
+
+Copyright (c) 2013 <a href="http://mark.koli.ch">Mark S. Kolich</a>
+
+All code in this project is freely available for use and redistribution under the <a href="http://opensource.org/comment/991">MIT License</a>.
+
+See <a href="https://github.com/markkolich/spray-servlet-webapp/blob/master/LICENSE">LICENSE</a> for details.
