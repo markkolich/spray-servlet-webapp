@@ -33,6 +33,7 @@ import com.kolich.spray.auth._
 import com.kolich.spray.auth.cookie._
 import com.kolich.spray.templating._
 import com.kolich.spray.protocols._
+import com.kolich.spray.i18n._
 
 import akka.actor._
 import spray.routing._
@@ -57,6 +58,8 @@ trait Service
   // provided by Akka in this context.
   protected def authenticator[U](authenticator: CookieAuthenticator[U] = SessionCookieAuthenticator()) =
     new UserAuthenticator[U](authenticator)
+    
+  protected val messages:MessageResolver = new ResourceBundleMessageResolver
   
   protected def redirectToRoute(route: String): HttpResponse = {
     HttpResponse(status = Found, headers = List(Location(ApplicationConfig.rootPath + route)))    
