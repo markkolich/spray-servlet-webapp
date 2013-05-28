@@ -16,7 +16,7 @@
 <h3>You're logged in.</h3>
 
 <p>
-	<h3>Here's some data loaded from the web-session, rendered via the "home.ssp" Scalate template:</h3>
+	<h3>Here's some data loaded from the web-session, rendered via the "home.ssp" Scalate template.</h3>
 	<ul>
 		<li>Username: <%= session.username %></li>
 		<li>Session ID: <%= session.id %></li>
@@ -24,12 +24,13 @@
 </p>
 
 <p>
-	<h3>Here's a cute image, showing the use of the container's default servlet to serve "static" content:</h3>
+	<h3>Here's a cute image, showing the use of the container's default servlet to serve "static" content.</h3>
 	<p><img src="<%= publicResourcePath %>/images/kitten.jpg"></p>
 </p>
 
 <p>
-	<h3>Here's an ExtJS grid panel that's rendered using JSON as fetched from Spray:</h3>
+	<h3>Here's an ExtJS grid panel that's rendered using JSON as fetched from Spray.</h3>
+	<h4>Loaded AJAX'y &mdash; an ExtJS store calls <a href="api/users">api/users</a> handled internally by service.routes.AjaxApiService</h4>
 	<div id="gridpanel-demo"></div>
 </p>
 

@@ -28,6 +28,7 @@ package com.kolich.spray.templating
 
 import org.fusesource.scalate.{ Binding, TemplateEngine }
 import spray.http._
+import spray.http.StatusCodes._
 import spray.routing._
 import MediaTypes._
 
@@ -48,6 +49,17 @@ trait ScalateSupport {
         templateEngine.layout(uri, attributes, extraBindings)
       }
     }
+  }
+  
+  def renderError(errorCode: StatusCode, attributes: Map[String, Any] = Map.empty,
+    extraBindings: Traversable[Binding] = Nil,
+    mediaType: MediaType = `text/html`): Route = {
+	errorCode match {
+	  case NotFound => render("templates/errors/" + NotFound.value + ".ssp",
+	      attributes, extraBindings, mediaType)
+	  case _ => render("templates/errors/generic.ssp",
+	      attributes, extraBindings, mediaType)
+	}
   }
 
 }

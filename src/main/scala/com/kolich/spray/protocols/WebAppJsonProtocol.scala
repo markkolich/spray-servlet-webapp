@@ -26,16 +26,40 @@
 
 package com.kolich.spray.protocols
 
+import com.kolich.spray.models._
+
 import spray.json._
 import spray.httpx._
 
-trait WebAppJsonProtocol extends DefaultJsonProtocol with HtmlSafeSprayJsonSupport {
+private[protocols] trait WebAppJsonProtocol {
   
-  object WebAppJsonFormat {
+  object WebAppJsonFormat extends DefaultJsonProtocol with HtmlSafeSprayJsonSupport {
+    
+    implicit def ListResponseFormat[A: JsonFormat] = jsonFormat3(ListResponse.apply[A])
+    implicit def ObjResponseFormat[A: JsonFormat]  = jsonFormat2(ObjResponse.apply[A])
     
     implicit object URIFormat extends RootJsonFormat[java.net.URI] {
     	def write(u: java.net.URI) = JsString(u.toString)
-		def read(value: JsValue) = java.net.URI.create(value.toString)
+		def read(v: JsValue) = java.net.URI.create(v.toString)
+    }
+    
+    implicit object ErrorTypeFormat extends RootJsonFormat[ErrorType] {
+      def write(u: ErrorType) = JsObject(
+    	"success" -> JsBoolean(u.success),
+    	"errorCode" -> JsNumber(u.errorCode),
+    	"message" -> JsString(u.message.getOrElse(""))
+      )
+      def read(v: JsValue) = throw new DeserializationException("Read of models.ErrorType not implemented")
+    }
+    
+    implicit object UserFormat extends RootJsonFormat[User] {
+      def write(u: User) = JsObject(
+    	"name" -> JsString(u.name),
+    	"email" -> JsString(u.email),
+    	"phone" -> JsString(u.phone),
+    	"notes" -> JsString(u.notes.getOrElse(""))
+      )
+      def read(v: JsValue) = throw new DeserializationException("Read of models.User not implemented")
     }
     
   }

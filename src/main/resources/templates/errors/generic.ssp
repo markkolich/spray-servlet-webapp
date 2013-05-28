@@ -1,0 +1,18 @@
+<%@ val publicResourcePath: String = "/" %>
+
+<!doctype html>
+<html>
+<head>
+	<title>404 Not Found</title>
+	<script src="<%= publicResourcePath %>/vendor/ext-all.js"></script>
+	<link rel="stylesheet" type="text/css" href="<%= publicResourcePath %>/vendor/resources/css/ext-all.css" />
+	<link rel="stylesheet" type="text/css" href="<%= publicResourcePath %>/css/app.css" />
+</head>
+<body>
+
+<h2>Oops, a generic error occurred.</h2>
+
+<h3>Uh, oh.</h3>
+
+</body>
+</html>

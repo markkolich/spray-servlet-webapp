@@ -1,32 +1,16 @@
 Ext.define('SimpsonStore', {
 	extend : 'Ext.data.Store',
-	fields : [ 'name', 'email', 'phone' ],
-	data : {
-		'items' : [ {
-			'name' : 'Lisa',
-			'email' : 'lisa@simpsons.com',
-			'phone' : '555-111-1224'
-		}, {
-			'name' : 'Bart',
-			'email' : 'bart@simpsons.com',
-			'phone' : '555-222-1234'
-		}, {
-			'name' : 'Homer',
-			'email' : 'home@simpsons.com',
-			'phone' : '555-222-1244'
-		}, {
-			'name' : 'Marge',
-			'email' : 'marge@simpsons.com',
-			'phone' : '555-222-1254'
-		} ]
-	},
-	proxy : {
-		type : 'memory',
-		reader : {
-			type : 'json',
-			root : 'items'
-		}
-	}
+	fields : [ 'name', 'email', 'phone', 'notes' ],
+	proxy: {
+        type: 'ajax',
+        url: 'api/users',
+        reader: {
+            type: 'json',
+            root: 'results',
+            totalProperty: 'totalCount',
+            successProperty: 'success'
+        }
+    }
 });
 
 Ext.define('SimpsonGrid', {
@@ -43,6 +27,9 @@ Ext.define('SimpsonGrid', {
 	}, {
 		text : 'Phone',
 		dataIndex : 'phone'
+	}, {
+		text : 'Notes',
+		dataIndex : 'notes'
 	} ],
 	height : 200,
 	width : 500,
@@ -50,5 +37,6 @@ Ext.define('SimpsonGrid', {
 });
 
 Ext.onReady(function() {
-	Ext.create('SimpsonGrid');
+	var grid = Ext.create('SimpsonGrid');
+	grid.getStore().load();
 });

@@ -51,7 +51,7 @@ import spray.http.HttpMethods._
 class WebAppService extends Service {
     
   override implicit val rejectionHandler: RejectionHandler = RejectionHandler.fromPF {
-    case Nil => complete(NotFound, "Foobar! Your default 404 page handler here.")
+    case Nil => renderError(NotFound, Map("publicResourcePath" -> getPublicResourcePath))
     case MissingSessionCookieRejection() :: _ => complete(redirectToRoute("/logout"))
     case WebAppAuthenticationRejection() :: _ => complete(redirectToRoute("/logout"))
   }
