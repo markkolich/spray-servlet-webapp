@@ -15,6 +15,8 @@
 
 <h3>You're logged in.</h3>
 
+<a href="logout">Logout</a>
+
 <p>
 	<h3>Here's some data loaded from the web-session, rendered via the "home.ssp" Scalate template.</h3>
 	<ul>
@@ -34,7 +36,11 @@
 	<div id="gridpanel-demo"></div>
 </p>
 
-<a href="logout">Logout</a>
+<p>
+	<h3>Fill in some fields and add a new user.</h3>
+	<h4>Watch the POST request in your local Firebug or developer tools console.</h4>
+	<div id="add-user-panel"></div>
+</p>
 
 <script src="<%= publicResourcePath %>/js/home.js"></script>
 

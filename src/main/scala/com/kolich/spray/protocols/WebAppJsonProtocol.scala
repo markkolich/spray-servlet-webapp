@@ -59,7 +59,10 @@ private[protocols] trait WebAppJsonProtocol {
     	"phone" -> JsString(u.phone),
     	"notes" -> JsString(u.notes.getOrElse(""))
       )
-      def read(v: JsValue) = throw new DeserializationException("Read of models.User not implemented")
+      def read(v: JsValue) = v.asJsObject.getFields("name", "email", "phone") match {
+        case Seq(JsString(name), JsString(email), JsString(phone)) =>
+          User(name, email, phone)
+      }
     }
     
   }

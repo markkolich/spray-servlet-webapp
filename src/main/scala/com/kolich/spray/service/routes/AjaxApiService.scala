@@ -50,9 +50,12 @@ class AjaxApiService extends Service {
   import WebAppJsonFormat._ // Brings the JSON formatters into scope.
   
   override implicit val rejectionHandler: RejectionHandler = RejectionHandler.fromPF {
-    case Nil => complete(NotFound, Error(errorCode = NotFound.value, message = Some(NotFound.defaultMessage)))
-    case MissingSessionCookieRejection() :: _ => complete(Unauthorized, Error(errorCode = Unauthorized.value, message = Some(Unauthorized.defaultMessage)))
-    case WebAppAuthenticationRejection() :: _ => complete(Unauthorized, Error(errorCode = Unauthorized.value, message = Some(Unauthorized.defaultMessage)))
+    case Nil => complete(NotFound,
+        Error(errorCode = NotFound.value, message = Some(NotFound.defaultMessage)))
+    case MissingSessionCookieRejection() :: _ => complete(Unauthorized,
+        Error(errorCode = Unauthorized.value, message = Some(Unauthorized.defaultMessage)))
+    case WebAppAuthenticationRejection() :: _ => complete(Unauthorized,
+        Error(errorCode = Unauthorized.value, message = Some(Unauthorized.defaultMessage)))
   }
   
   override def receive = runRoute {
@@ -69,12 +72,21 @@ class AjaxApiService extends Service {
 	  		      // out safely (with nasty characters properly encoded to prevent
 	  		      // XSS attacks in dynamic data). This demonstrates the "HTML
 	  		      // safe JSON" support injected into spray-json.
-	  		      User("Bart", "bart@simpsons.com", "555-222-1234", Some("""<script>alert("eat my shorts")</script>""")), // He He
+	  		      User("Bart", "bart@simpsons.com", "555-222-1234",
+	  		          Some("""<script>alert("eat my shorts")</script>""")), // He He
 	  		      User("Homer", "homer@simpsons.com", "555-222-1244"),
 	  		      User("Marge", "marge@simpsons.com", "555-222-1254"),
 	  		      User("Maggie", "maggie@simpsons.com", "555-333-8782")
 	  		  )
 	  		  _.complete(OK, ListResponse(users.size, true, users))
+	  		} ~
+	  		post {
+	  		  entity(as[User]) { user =>
+	  		    // Insert user into database or some other store here.
+	  		    // Send the raw user, as received, back to the caller
+	  		    // (for obvious demo purposes).
+	  		    _.complete(user)
+	  		  }
 	  		}
 	  	}
 	  }
