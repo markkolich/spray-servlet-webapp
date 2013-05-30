@@ -43,13 +43,13 @@ private[protocols] trait WebAppJsonProtocol {
 		def read(v: JsValue) = java.net.URI.create(v.toString)
     }
     
-    implicit object ErrorTypeFormat extends RootJsonFormat[ErrorType] {
-      def write(u: ErrorType) = JsObject(
+    implicit object ErrorFormat extends RootJsonFormat[Error] {
+      def write(u: Error) = JsObject(
     	"success" -> JsBoolean(u.success),
     	"errorCode" -> JsNumber(u.errorCode),
     	"message" -> JsString(u.message.getOrElse(""))
       )
-      def read(v: JsValue) = throw new DeserializationException("Read of models.ErrorType not implemented")
+      def read(v: JsValue) = throw new DeserializationException("Read of models.Error not implemented")
     }
     
     implicit object UserFormat extends RootJsonFormat[User] {

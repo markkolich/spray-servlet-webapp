@@ -26,7 +26,7 @@
 
 package com.kolich.spray.models
 
-case class ErrorType(success:Boolean = false, errorCode: Int, message: Option[String] = None)
+case class Error(success:Boolean = false, errorCode: Int, message: Option[String] = None)
 
 case class ObjResponse[A](success:Boolean = true, obj : A)
 

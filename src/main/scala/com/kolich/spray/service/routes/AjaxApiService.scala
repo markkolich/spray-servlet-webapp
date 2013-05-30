@@ -50,9 +50,9 @@ class AjaxApiService extends Service {
   import WebAppJsonFormat._ // Brings the JSON formatters into scope.
   
   override implicit val rejectionHandler: RejectionHandler = RejectionHandler.fromPF {
-    case Nil => complete(NotFound, ErrorType(errorCode = NotFound.value, message = Some(NotFound.defaultMessage)))
-    case MissingSessionCookieRejection() :: _ => complete(Unauthorized, ErrorType(errorCode = Unauthorized.value, message = Some(Unauthorized.defaultMessage)))
-    case WebAppAuthenticationRejection() :: _ => complete(Unauthorized, ErrorType(errorCode = Unauthorized.value, message = Some(Unauthorized.defaultMessage)))
+    case Nil => complete(NotFound, Error(errorCode = NotFound.value, message = Some(NotFound.defaultMessage)))
+    case MissingSessionCookieRejection() :: _ => complete(Unauthorized, Error(errorCode = Unauthorized.value, message = Some(Unauthorized.defaultMessage)))
+    case WebAppAuthenticationRejection() :: _ => complete(Unauthorized, Error(errorCode = Unauthorized.value, message = Some(Unauthorized.defaultMessage)))
   }
   
   override def receive = runRoute {
