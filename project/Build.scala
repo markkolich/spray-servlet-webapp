@@ -38,7 +38,7 @@ object Dependencies {
 
   // Internal dependencies
   
-  private val kolichCommon = "com.kolich" % "kolich-common" % "0.0.8" % "compile"
+  private val kolichCommon = "com.kolich" % "kolich-common" % "0.1.0" % "compile"
 
   // External dependencies
 
@@ -106,7 +106,7 @@ object SprayServletWebapp extends Build {
     settings = Defaults.defaultSettings ++ Seq(resolvers := depResolvers) ++ Seq(
       version := aVer,
       organization := aOrg,
-      scalaVersion := "2.10.1",
+      scalaVersion := "2.10.2",
       shellPrompt := { (state: State) => { "%s:%s> ".format(aName, aVer) } },
       // True to export the packaged JAR instead of just the compiled .class files.
       exportJars := true,
